@@ -16,6 +16,7 @@ public class _2_2_4_ReadingData {
     try (Connection connection = ConnectionFactory.createConnection(conf);
         Table table = connection.getTable(TableName.valueOf("users"))) {
       Get g = new Get(Bytes.toBytes("TheRealMT"));
+      g.addColumn(Bytes.toBytes("info"), Bytes.toBytes("password"));
       Result r = table.get(g);
       System.out.println(r);
     }
