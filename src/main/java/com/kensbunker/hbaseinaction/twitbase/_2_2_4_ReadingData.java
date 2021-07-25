@@ -16,9 +16,12 @@ public class _2_2_4_ReadingData {
     try (Connection connection = ConnectionFactory.createConnection(conf);
         Table table = connection.getTable(TableName.valueOf("users"))) {
       Get g = new Get(Bytes.toBytes("TheRealMT"));
-      g.addColumn(Bytes.toBytes("info"), Bytes.toBytes("password"));
+      g.addFamily(Bytes.toBytes("info"));
       Result r = table.get(g);
-      System.out.println(r);
+      // convert back from bytes
+      byte[] b = r.getValue(Bytes.toBytes("info"), Bytes.toBytes("email"));
+      String email = Bytes.toString(b);
+      System.out.println(email);
     }
   }
 }
