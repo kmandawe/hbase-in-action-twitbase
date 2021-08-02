@@ -20,6 +20,8 @@ public class _2_6_1_StoringTwitsWithEfficientRowKeyDesign {
     // Opening a connection
     // Create a connection to the cluster.
     Configuration conf = HBaseConfiguration.create();
+    conf.setInt("hbase.client.retries.number", 1);
+    conf.setInt("zookeeper.recovery.retry", 0);
     try (Connection connection = ConnectionFactory.createConnection(conf);
         Table table = connection.getTable(TableName.valueOf("twits"))) {
 
