@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UsersDao {
+public class UsersDAO {
   public static final String TABLE_NAME = ("users");
   public static final byte[] INFO_FAM = Bytes.toBytes("info");
   public static final byte[] USER_COL = Bytes.toBytes("user");
@@ -19,7 +19,7 @@ public class UsersDao {
 
   private Connection connection;
 
-  public UsersDao(Connection connection) {
+  public UsersDAO(Connection connection) {
     this.connection = connection;
   }
 

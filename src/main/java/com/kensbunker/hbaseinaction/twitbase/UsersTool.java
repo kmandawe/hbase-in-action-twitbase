@@ -1,6 +1,6 @@
 package com.kensbunker.hbaseinaction.twitbase;
 
-import com.kensbunker.hbaseinaction.twitbase.hbase.UsersDao;
+import com.kensbunker.hbaseinaction.twitbase.hbase.UsersDAO;
 import com.kensbunker.hbaseinaction.twitbase.model.User;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HBaseConfiguration;
@@ -12,12 +12,12 @@ import java.io.IOException;
 public class UsersTool {
 
   public static final String USAGE =
-      "UsersTool action ...\n" +
-              " help - print this message and exit.\n" +
-              " add user name email password" +
-              "- add a new user.\n" +
-              " get user - retrieve a specific user.\n" +
-              " list - list all installed users.\n";
+      "UsersTool action ...\n"
+          + " help - print this message and exit.\n"
+          + " add user name email password"
+          + "- add a new user.\n"
+          + " get user - retrieve a specific user.\n"
+          + " list - list all installed users.\n";
 
   public static void main(String[] args) throws IOException {
     if (args.length == 0 || "help".equals(args[0])) {
@@ -26,10 +26,10 @@ public class UsersTool {
     }
 
     Configuration conf = HBaseConfiguration.create();
-    conf.setInt("hbase.client.retries.number",1);
-    conf.setInt("zookeeper.recovery.retry",0);
+    conf.setInt("hbase.client.retries.number", 1);
+    conf.setInt("zookeeper.recovery.retry", 0);
     try (Connection connection = ConnectionFactory.createConnection(conf)) {
-      UsersDao dao = new UsersDao(connection);
+      UsersDAO dao = new UsersDAO(connection);
 
       if ("get".equals(args[0])) {
         System.out.println("Getting user " + args[1]);
@@ -45,7 +45,7 @@ public class UsersTool {
       }
 
       if ("list".equals(args[0])) {
-        for (User u: dao.getUsers()) {
+        for (User u : dao.getUsers()) {
           System.out.println(u);
         }
       }
