@@ -16,6 +16,7 @@ public class UsersDAO {
   public static final byte[] EMAIL_COL = Bytes.toBytes("email");
   public static final byte[] PASS_COL = Bytes.toBytes("password");
   public static final byte[] TWEETS_COL = Bytes.toBytes("tweet_count");
+  public static final byte[] HAMLET_COL = Bytes.toBytes("hamlet_tag");
 
   private Connection connection;
 
@@ -35,6 +36,12 @@ public class UsersDAO {
     p.addColumn(INFO_FAM, NAME_COL, Bytes.toBytes(u.name));
     p.addColumn(INFO_FAM, EMAIL_COL, Bytes.toBytes(u.email));
     p.addColumn(INFO_FAM, PASS_COL, Bytes.toBytes(u.password));
+    return p;
+  }
+
+  public static Put mkPut(String username, byte[] fam, byte[] qual, byte[] val) {
+    Put p = new Put(Bytes.toBytes(username));
+    p.addColumn(fam, qual, val);
     return p;
   }
 
@@ -75,19 +82,17 @@ public class UsersDAO {
     }
   }
 
-  public List<com.kensbunker.hbaseinaction.twitbase.model.User> getUsers()
-          throws IOException {
-    List<com.kensbunker.hbaseinaction.twitbase.model.User> ret
-            = new ArrayList<com.kensbunker.hbaseinaction.twitbase.model.User>();
+  public List<com.kensbunker.hbaseinaction.twitbase.model.User> getUsers() throws IOException {
+    List<com.kensbunker.hbaseinaction.twitbase.model.User> ret =
+        new ArrayList<com.kensbunker.hbaseinaction.twitbase.model.User>();
     try (Table table = connection.getTable(TableName.valueOf(TABLE_NAME))) {
       ResultScanner results = table.getScanner(mkScan());
-      for(Result r : results) {
+      for (Result r : results) {
         ret.add(new User(r));
       }
     }
     return ret;
   }
-
 
   private static class User extends com.kensbunker.hbaseinaction.twitbase.model.User {
     private User(Result r) {
